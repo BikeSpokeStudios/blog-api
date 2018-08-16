@@ -1,0 +1,19 @@
+{
+  "name": "blog-api",
+  "version": "1.0.0",
+  "description": "Thinkful Assignment for Node 1.4.7",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BikeSpokeStudios/blog-api.git"
+  },
+  "author": "David Parker",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BikeSpokeStudios/blog-api/issues"
+  },
+  "homepage": "https://github.com/BikeSpokeStudios/blog-api#readme"
+}
