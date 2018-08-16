@@ -17,6 +17,7 @@ function StorageException(message) {
 
 const BlogPosts = {
   create: function(title, content, author, publishDate) {
+    console.log('Creating new blog post');
     const post = {
       id: uuid.v4(),
       title: title,
@@ -31,15 +32,18 @@ const BlogPosts = {
     // if id passed in, retrieve single post,
     // otherwise send all posts.
     if (id !== null) {
+      console.log("retrieving one blog post");
       return this.posts.find(post => post.id === id);
     }
     // return posts sorted (descending) by
     // publish date
+    console.log('Returning the full list of posts');
     return this.posts.sort(function(a, b) {
       return b.publishDate - a.publishDate
     });
   },
   delete: function(id) {
+    console.log('Deleting a blog post');
     const postIndex = this.posts.findIndex(
       post => post.id === id);
     if (postIndex > -1) {
@@ -47,6 +51,7 @@ const BlogPosts = {
     }
   },
   update: function(updatedPost) {
+    console.log(`Updating Blog Post ${updatedPost.id}`);
     const {id} = updatedPost;
     const postIndex = this.posts.findIndex(
       post => post.id === updatedPost.id);
