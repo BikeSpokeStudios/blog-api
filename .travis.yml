@@ -1,2 +1,9 @@
 language: node_js
 node_js: node
+deploy:
+  provider: heroku
+  api_key:
+    secure: HNQ2iBntJ86fTLYSX6P65v91EhAAh/JjhSOLE2auebl5eZEjS3EzmoixXW6+ZD6nSynuY3RHq1BvE86ntZhNR2widcfslN6T7Mx/C3YDLA8AVHMSHZpLSNgPATTtg+y/Goz6L241VWs1VT9d8W0LhKW04rOixre3iWYTzytZt2uAB9NkCIrawgn82koqL62oDxeCQRqxPB9/PWiFdjhUjnN6gHiA1bK3HY9Ux1ObAm1cTRXHTnxEw1PsgVgZM+6isJV5o6uNaQEL1OhpjavORbrGuPqfGw1iVgMZpnG/hom/awE62z6qrjwN5bJclmPSffbdm56nYhawi/fNj3r1xSSUZJI7TyPwDGW1BerfhnDr+2Hgy/rHZOCUpOfm6HhRN1MU0ASUlryKuwjeYgx23ZuCWEf2OZp9I9K9HpljlseGZKWveNMpLntRzx/Y1R+1X92AhDahME7fUTU29hy8hgf4DIhimPHb4Y9/8pRiDPirwvYIhoCYXQo3HSJn+NGgbp/soBgT/VO/yedXujvc2PC9D7Z9gWfr7V08bpjouRY4FlT1V9sxxQzSa5x0OaOf7zNmnQxuj1cQ/uiGgwJuV2CLNG6bhvx97K52H7vYB4uA1Htq45TmENJpO600GkM/QZY40mzvLQol9p3FlP3XWBMHhgn/z/FTU/EHCYY5EVU=
+  app: glacial-brook-22633
+  on:
+    repo: BikeSpokeStudios/blog-api
