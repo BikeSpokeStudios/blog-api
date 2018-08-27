@@ -1,5 +1,8 @@
 const express = require('express');
 const morgan = require('morgan');
+const mongoose = require("mongoose");
+
+const { PORT, DATABASE_URL } = require("./config");
 
 const app = express();
 app.use(express.json());
@@ -9,7 +12,7 @@ const blogPostsRouter = require('./blogPostsRouter');
 // log the http layer, yo!
 app.use(morgan('common'));
 
-app.use('/blogposts', blogPostsRouter);
+app.use('/posts', blogPostsRouter);
 
 //app.listen(process.env.PORT || 8080, () => {
 //  console.log(`Your app is listening on port ${process.env.PORT || 8080}`);
@@ -18,36 +21,44 @@ app.use('/blogposts', blogPostsRouter);
 // Add runServer and closeServer for testing
 let server;
 
-function runServer() {
-  const port = process.env.PORT || 8080;
+function runServer(databaseUrl, port = PORT) {
   return new Promise((resolve, reject) => {
-    server = app
-    .listen(port, () => {
-      console.log(`Your app is listening on port ${port}`);
-      resolve(server);
-    })
-    .on("error", err => {
-      reject(err);
-    });
+    mongoose.connect(
+      databaseUrl,
+      err => {
+        if (err) {
+          return reject(err);
+        }
+        server = app
+          .listen(port, () => {
+            console.log(`Your app is listening on port ${port}`);
+            resolve();
+          })
+          .on("error", err => {
+            mongoose.disconnect();
+            reject(err);
+          });
+      }
+    );
   });
 }
 
 function closeServer() {
-  return new Promise((resolve, reject) => {
-    console.log("Closing server");
-    server.close(err => {
-      if (err) {
-        reject(err);
-        // so we don't also call 'resolve()'
-        return;
-      }
-      resolve();
+  return mongoose.disconnect().then(() => {
+    return new Promise((resolve, reject) => {
+      console.log("Closing server");
+      server.close(err => {
+        if (err) {
+          return reject(err);
+        }
+        resolve();
+      });
     });
   });
 }
 
 if (require.main === module) {
-  runServer().catch(err => console.error(err));
+  runServer(DATABASE_URL).catch(err => console.error(err));
 }
 
 module.exports = { app, runServer, closeServer };
