@@ -23,12 +23,12 @@ const blogPostSchema = mongoose.Schema({
   comments: [commentSchema]
 });
 
-blogPostSchema.pre('find', function(next) {
+blogPostSchema.pre('findOne', function(next) {
   this.populate('author');
   next();
 })
 
-blogPostSchema.pre('findById', function(next) {
+blogPostSchema.pre('find', function(next) {
   this.populate('author');
   next();
 })
@@ -42,12 +42,11 @@ blogPostSchema.methods.serialize = function() {
       id: this._id,
       title: this.title,
       author: this.authorString,
-      content: this.content/*,
-      comments: this.comments*/
+      content: this.content
   };
 };
 
-const Author = mongoose.model("Author", authorSchema);
+var Author = mongoose.model('Author', authorSchema);
 const BlogPost = mongoose.model("BlogPost", blogPostSchema);
 
-module.exports = { BlogPost };
+module.exports = { Author, BlogPost };
