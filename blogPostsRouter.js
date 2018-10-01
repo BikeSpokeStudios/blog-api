@@ -78,9 +78,9 @@ router.post('/', (req, res) => {
         res.status(500).json({ message: "Internal server error" });
       });
     } else {
-      const message = `Author Id ${req.body.author_id} is not in the database`;
+      const message = `Something went wrong!`;
       console.error(message);
-      return res.status(400).send(message);
+      return res.status(500).send(message);
     }
   }).catch(err => {
     console.error(err);
@@ -91,8 +91,10 @@ router.post('/', (req, res) => {
 
 router.delete('/:id', (req, res) => {
   BlogPost.findByIdAndRemove(req.params.id)
-  .then(blogpost => res.status(204).end())
-  .catch(err => res.status(500).json({ message: "Internal server error" }));
+  .then(() => {
+    console.log(`${req.params.id} was deleted from the database`);
+    res.status(204).end();
+  }).catch(err => res.status(500).json({ message: "Internal server error" }));
 });
 
 router.put('/:id', (req, res) => {
@@ -103,7 +105,7 @@ router.put('/:id', (req, res) => {
   }
 
   const toUpdate = {};
-  const updateableFields = ["title", "author", "content"];
+  const updateableFields = ["title", "content"];
 
   updateableFields.forEach(field => {
     if ( field in req.body ) {
@@ -112,7 +114,11 @@ router.put('/:id', (req, res) => {
   });
 
   BlogPost.findByIdAndUpdate( req.params.id, { $set: toUpdate }, { new: true } )
-  .then(blogpost => res.status(200).json(blogpost.serialize()))
+  .then(blogpost => res.status(200).json({
+    title: blogpost.title,
+    content: blogpost.content,
+    author: blogpost.authorString
+  }))
   .catch(err => {
     console.error(err);
     res.status(500).json({ message: "Internal server error" });

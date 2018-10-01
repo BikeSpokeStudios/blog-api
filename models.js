@@ -23,6 +23,11 @@ const blogPostSchema = mongoose.Schema({
   comments: [commentSchema]
 });
 
+blogPostSchema.pre('findOneAndUpdate', function(next) {
+  this.populate('author');
+  next();
+})
+
 blogPostSchema.pre('findOne', function(next) {
   this.populate('author');
   next();
