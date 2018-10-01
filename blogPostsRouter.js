@@ -29,9 +29,13 @@ router.get('/:id', (req, res) => {
   BlogPost.findById(req.params.id)
   .then(blogpost => {
     console.log(blogpost);
-    res.json(
-      blogpost.serialize()
-    );
+    res.json({
+      id: blogpost._id,
+      title: blogpost.title,
+      author: blogpost.authorString,
+      content: blogpost.content,
+      comments: blogpost.comments
+    });
   })
   .catch(err => {
     console.error(err);
