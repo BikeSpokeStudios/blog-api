@@ -12,7 +12,6 @@ const { Author, BlogPost } = require("./models");
 router.get('/', (req, res) => {
   BlogPost.find()
   .then(blogposts => {
-    console.log(blogposts);
     res.json({
       blogposts: blogposts.map(
         (blogpost) => blogpost.serialize())
@@ -28,7 +27,6 @@ router.get('/:id', (req, res) => {
   // Get a single post by id
   BlogPost.findById(req.params.id)
   .then(blogpost => {
-    console.log(blogpost);
     res.json({
       id: blogpost._id,
       title: blogpost.title,
@@ -62,19 +60,23 @@ router.post('/', (req, res) => {
   Author.findById(id)
   .then(author => {
     if (author) {
-      console.log(author);
-      /*BlogPost.create({
+      //console.log(author);
+      BlogPost.create({
         title: req.body.title,
         content: req.body.content,
-        author: req.body.author_id
+        author: author._id
       })
       .then(blogpost => res.status(201).json({
-        id: blogPost.id
+        id: blogpost._id,
+        author: `${author.firstName} ${author.lastName}`,
+        content: blogpost.content,
+        title: blogpost.title,
+        comments: blogpost.comments
       }))
       .catch(err => {
         console.error(err);
         res.status(500).json({ message: "Internal server error" });
-      });*/
+      });
     } else {
       const message = `Author Id ${req.body.author_id} is not in the database`;
       console.error(message);
@@ -82,7 +84,7 @@ router.post('/', (req, res) => {
     }
   }).catch(err => {
     console.error(err);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(400).json({ message: `Author Id ${req.body.author_id} not in the database` });
   });
 
 });
