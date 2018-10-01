@@ -93,4 +93,20 @@ router.put('/:id', (req, res) => {
   });
 });
 
+router.delete('/:id', (req, res) => {
+  BlogPost.remove({ author: req.params.id})
+  .then(() => {
+    Author.findByIdAndRemove( req.params.id )
+    .then(() => {
+      console.log(`${req.params.id} was deleted from the database`);
+      res.status(204).end();
+    });
+  })
+  .catch(err => {
+    const message = `Internal server error`;
+    console.log(message);
+    res.status(500).json({ message: message });
+  });
+});
+
 module.exports = router;
